@@ -30,9 +30,9 @@ public class ConfigWriter {
             instance= new ConfigWriter();
         return instance;
     }
-    private void writeFile(StringBuilder sb) throws IOException
+    private void writeFile(StringBuilder sb,String pathNginxConfigFile) throws IOException
     {
-            FileWriter fWriter= new FileWriter(Informations.pathNginxConfigFile);
+            FileWriter fWriter= new FileWriter(pathNginxConfigFile);
             fWriter.append(sb);
             fWriter.flush();
             fWriter.close();
@@ -66,7 +66,7 @@ public class ConfigWriter {
         }
         return offset;
     }
-    public void createStream() throws FileNotFoundException, IOException, BadConfigurationException
+    public void createStream(String pathNginxConfigFile) throws FileNotFoundException, IOException, BadConfigurationException
     {
         synchronized(ConfigWriter.class)
         {
@@ -76,7 +76,7 @@ public class ConfigWriter {
                                     "                        exec_options on;\n" +
                                     "                        exec_pull ffmpeg -i /home/yorbe/test/demo2.avi -threads 1 -c:v libx264 -profile:v baseline -b:v 350K -s 640x360 -f flv -c:a aac -ac 1 -strict -2 -b:a 56k rtmp://localhost/$app/$name name=example4;\n" +
                                     "                }\n	";
-            BufferedReader br = new BufferedReader(new FileReader(Informations.pathNginxConfigFile));
+            BufferedReader br = new BufferedReader(new FileReader(pathNginxConfigFile));
             StringBuilder sb= new StringBuilder();
             String line = br.readLine();
             while(line != null)
@@ -90,18 +90,18 @@ public class ConfigWriter {
                 throw  new BadConfigurationException();
             sb.insert(offset, newStreamString);
             br.close();
-            writeFile(sb);
+            writeFile(sb,pathNginxConfigFile);
             
             
         }
     }
     
-    public void deleteStream(String id) throws FileNotFoundException, IOException
+    public void deleteStream(String id,String pathNginxConfigFile) throws FileNotFoundException, IOException
     {
         synchronized(ConfigWriter.class)
         {
             //Read the file config and delete new stream thread
-            BufferedReader br = new BufferedReader(new FileReader(Informations.pathNginxConfigFile));
+            BufferedReader br = new BufferedReader(new FileReader(pathNginxConfigFile));
             boolean appendLine=true;
             String auxId=id;
         try {
@@ -131,7 +131,7 @@ public class ConfigWriter {
                 line = br.readLine();
                }
             br.close();
-            writeFile(sb);
+            writeFile(sb,pathNginxConfigFile);
             
             } finally {
                         br.close();

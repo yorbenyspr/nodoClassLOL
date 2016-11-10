@@ -5,12 +5,11 @@
  */
 package nodestream;
 
-import java.io.Console;
+
 import java.util.Scanner;
 import nodestream.utils.ConfigWriter;
-import nodestream.utils.Informations;
-import nodestream.utils.SystemInfo;
-
+import nodestream.utils.Utils;
+import org.json.JSONObject;
 /**
  *
  * @author yorbe
@@ -21,10 +20,7 @@ public class NodeStream {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        String fM=SystemInfo.freeMemory();
-        String tM=SystemInfo.totalMemory();
-        String uM=SystemInfo.memoryUsage();
-        String cpuU=SystemInfo.cpuUsage();
+        
         Scanner scanner = new Scanner(System.in);
         System.out.println("Seleccione una opción:");
         System.out.println("1-Create Stream.");
@@ -32,20 +28,30 @@ public class NodeStream {
         String auxIn = "";
         while(!auxIn.equals("Q"))
         {
+           JSONObject configuration = Utils.getConfiguration();
+
            auxIn = scanner.nextLine();
+           boolean validConfig=false;
+           try{
+               if(!configuration.getString("nginxConfigurationPath").equals("")&&!configuration.getString("nginxBinaryPath").equals(""))
+                    validConfig=true;
+           }
+           catch(Exception e){}
+           if(validConfig)
             try {
                 switch(auxIn)
                 {
                     case "1":
                     {
-                        ConfigWriter.singleton().createStream();
-                        Runtime.getRuntime().exec(Informations.pathNginxBinary+" -s reload");
+                        
+                        ConfigWriter.singleton().createStream(configuration.getString("nginxConfigurationPath"));
+                        Runtime.getRuntime().exec(configuration.getString("nginxBinaryPath")+" -s reload");
                         break;
                     }
                     case "2":
                     {
-                        ConfigWriter.singleton().deleteStream("live5");
-                        Runtime.getRuntime().exec(Informations.pathNginxBinary+" -s reload");
+                        ConfigWriter.singleton().deleteStream("live5",configuration.getString("nginxConfigurationPath"));
+                        Runtime.getRuntime().exec(configuration.getString("nginxBinaryPath")+" -s reload");
                         break;
                     }
                     default:break;
