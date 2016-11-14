@@ -6,7 +6,8 @@
 package nodestream.utils;
 import java.lang.management.ManagementFactory;
 import com.sun.management.OperatingSystemMXBean;
-import sun.misc.GC;
+import org.hyperic.sigar.*;
+import org.json.*;
 /**
  *
  * @author yorbe
@@ -31,10 +32,33 @@ public final class SystemInfo {
         OperatingSystemMXBean operatingSystemMXBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
         return Long.toString(operatingSystemMXBean.getFreePhysicalMemorySize()/1024);
     }
-    public static String cpuUsage()
+    
+    public static JSONObject cpuInfo()
     {
-        OperatingSystemMXBean operatingSystemMXBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean(); 
-        double usage= operatingSystemMXBean.getSystemCpuLoad();
-        return Double.toString(usage);
+        JSONObject cpuU = new JSONObject();
+        try {
+            Sigar s= new Sigar();
+            CpuPerc percs[]= s.getCpuPercList();
+            cpuU.put("totalUsage",s.getCpuPerc().getCombined()*100);//Global information
+            cpuU.put("cores", percs.length);
+            JSONObject perCores = new JSONObject();
+            for (int i = 0; i < percs.length; i++) {
+                perCores.put("core-"+String.valueOf(i),percs[i].getCombined()*100);//Per core
+            }
+            cpuU.put("perCores", perCores);
+            
+        } catch (Exception e) {
+        }
+        return cpuU;
+    }
+    
+    public static JSONObject getSystemInfo()
+    {
+        JSONObject info = new JSONObject();
+        info.put("memoryUsage", memoryUsage());
+        info.put("FreeMemory", freeMemory());
+        info.put("TotalMemory", totalMemory());
+        info.put("cpuInfo", cpuInfo());
+        return info;
     }
 }

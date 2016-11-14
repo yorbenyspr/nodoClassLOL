@@ -10,6 +10,7 @@ import java.util.Scanner;
 import nodestream.utils.ConfigWriter;
 import nodestream.utils.Utils;
 import org.json.JSONObject;
+import nodestream.utils.SystemInfo;
 /**
  *
  * @author yorbe
@@ -20,7 +21,6 @@ public class NodeStream {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
         Scanner scanner = new Scanner(System.in);
         System.out.println("Seleccione una opción:");
         System.out.println("1-Create Stream.");
