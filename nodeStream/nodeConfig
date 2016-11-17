@@ -1,1 +1,1 @@
-{"interval":-1,"nginxConfigurationPath":"file.txt","nginxBinaryPath":"nginx"}
+{"nginxBinaryPath":"nginx","nginxConfigurationPath":"file.txt","interval":-1}

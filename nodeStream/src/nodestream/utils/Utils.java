@@ -9,17 +9,16 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import org.json.*;
-
+import java.util.HashMap;
 /**
  *
  * @author dotUser
  */
 public final class Utils {
     private Utils(){}
-    
     public static synchronized JSONObject getConfiguration()
     {
-            JSONObject obj = new JSONObject("{}");;
+            JSONObject obj = new JSONObject("{}");
             try{
             BufferedReader br = new BufferedReader(new FileReader("nodeConfig"));
             StringBuilder sb= new StringBuilder();
@@ -50,6 +49,29 @@ public final class Utils {
                 return obj;
             }
           
+    }
+    
+    public static synchronized void createConfigFile(HashMap<String,String> values)
+    {
+        JSONObject obj = getConfiguration();
+        for(String key : values.keySet())
+        {
+            if(!key.equals("interval"))
+                obj.put(key, values.get(key));
+            else
+                obj.put(key, Integer.parseInt(values.get(key)));
+            
+        }
+              
+        try {
+            FileWriter fWriter= new FileWriter("nodeConfig");
+            StringBuilder sb= new StringBuilder(obj.toString());
+            fWriter.append(sb);
+            fWriter.flush();
+            fWriter.close();
+        } catch (Exception e) {
+        }
+        
     }
     
     

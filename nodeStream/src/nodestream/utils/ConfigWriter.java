@@ -66,15 +66,15 @@ public class ConfigWriter {
         }
         return offset;
     }
-    public void createStream(String pathNginxConfigFile) throws FileNotFoundException, IOException, BadConfigurationException
+    public void createStream(String pathNginxConfigFile,String streamName, String pullFrom) throws FileNotFoundException, IOException, BadConfigurationException
     {
         synchronized(ConfigWriter.class)
         {
             //It Represents the new stream
-            String newStreamString= "\n\tapplication live5{\n" +
+            String newStreamString= "\n\tapplication "+streamName+"{\n" +
                                     "                        live on;\n" +
                                     "                        exec_options on;\n" +
-                                    "                        exec_pull ffmpeg -i /home/yorbe/test/demo2.avi -threads 1 -c:v libx264 -profile:v baseline -b:v 350K -s 640x360 -f flv -c:a aac -ac 1 -strict -2 -b:a 56k rtmp://localhost/$app/$name name=example4;\n" +
+                                    "                        exec_pull ffmpeg -i "+ pullFrom + " -threads 1 -c:v libx264 -profile:v baseline -b:v 350K -s 640x360 -f flv -c:a aac -ac 1 -strict -2 -b:a 56k rtmp://localhost/$app/$name name=live;\n" +
                                     "                }\n	";
             BufferedReader br = new BufferedReader(new FileReader(pathNginxConfigFile));
             StringBuilder sb= new StringBuilder();

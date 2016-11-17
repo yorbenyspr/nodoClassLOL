@@ -7,10 +7,7 @@ package nodestream;
 
 
 import java.util.Scanner;
-import nodestream.utils.ConfigWriter;
-import nodestream.utils.Utils;
-import org.json.JSONObject;
-import nodestream.utils.SystemInfo;
+import nodestream.utils.ArgumentReader;
 /**
  *
  * @author yorbe
@@ -19,46 +16,23 @@ public class NodeStream {
 
     /**
      * @param args the command line arguments
+     * create-stream $streamName pull-from $pullStream
+     * delete-stream  $streamName
+     * nginx-config-file $confFile nginx-exec-file $execFile interval $interval
      */
     public static void main(String[] args) {
+        ArgumentReader.readArguments(args);
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Seleccione una opción:");
-        System.out.println("1-Create Stream.");
-        System.out.println("2-Delete Stram.");
         String auxIn = "";
         while(!auxIn.equals("Q"))
         {
-           JSONObject configuration = Utils.getConfiguration();
-
+           
            auxIn = scanner.nextLine();
-           boolean validConfig=false;
-           try{
-               if(!configuration.getString("nginxConfigurationPath").equals("")&&!configuration.getString("nginxBinaryPath").equals(""))
-                    validConfig=true;
-           }
-           catch(Exception e){}
-           if(validConfig)
-            try {
-                switch(auxIn)
-                {
-                    case "1":
-                    {
-                        
-                        ConfigWriter.singleton().createStream(configuration.getString("nginxConfigurationPath"));
-                        Runtime.getRuntime().exec(configuration.getString("nginxBinaryPath")+" -s reload");
-                        break;
-                    }
-                    case "2":
-                    {
-                        ConfigWriter.singleton().deleteStream("live5",configuration.getString("nginxConfigurationPath"));
-                        Runtime.getRuntime().exec(configuration.getString("nginxBinaryPath")+" -s reload");
-                        break;
-                    }
-                    default:break;
-                }
-                
-            } catch (Exception e) {
-            }
+           String[] commands= auxIn.split(" ");
+           if(commands.length<2)
+               continue;
+           auxIn=commands[0];
+           ArgumentReader.readArguments(commands);
            
         }
     }

@@ -8,12 +8,13 @@ package nodestream.exceptions;
 /**
  *
  * @author yorbe
+ * Esta excepción es lanzada cuando el archivo de configuración de Nginx posee una estructura inválida.
  */
 public class BadConfigurationException extends Exception {
 
     @Override
     public String getMessage() {
-        return "Bad configuration file"; //To change body of generated methods, choose Tools | Templates.
+        return "Bad configuration file"; 
     }
     
 }
