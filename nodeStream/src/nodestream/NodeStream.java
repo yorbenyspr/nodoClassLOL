@@ -6,13 +6,14 @@
 package nodestream;
 
 
+import java.io.File;
 import java.util.Scanner;
 import nodestream.utils.ArgumentReader;
 /**
  *
  * @author yorbe
  */
-public class NodeStream {
+public class NodeStream implements Runnable{
 
     /**
      * @param args the command line arguments
@@ -21,6 +22,8 @@ public class NodeStream {
      * nginx-config-file $confFile nginx-exec-file $execFile interval $interval
      */
     public static void main(String[] args) {
+        Thread pipeThread = new Thread(new NodeStream());
+        pipeThread.start();
         ArgumentReader.readArguments(args);
         Scanner scanner = new Scanner(System.in);
         String auxIn = "";
@@ -34,6 +37,25 @@ public class NodeStream {
            auxIn=commands[0];
            ArgumentReader.readArguments(commands);
            
+        }
+    }
+
+    @Override
+    public void run() {
+        try {
+            String pipePath="/tmp/nodepipe";
+            Runtime.getRuntime().exec("rm "+pipePath).waitFor();
+            Runtime.getRuntime().exec("mkfifo "+pipePath).waitFor();
+            while (true) {
+                Scanner in = new Scanner(new File(pipePath));
+                while(in.hasNextLine())
+                {
+                    ArgumentReader.readArguments(in.nextLine().split(" "));
+                }
+                in.close();
+                
+            }
+        } catch (Exception e) {
         }
     }
     

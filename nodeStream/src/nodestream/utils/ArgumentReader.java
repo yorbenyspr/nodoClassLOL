@@ -28,6 +28,8 @@ public final class ArgumentReader {
                     confArguments.put("interval", arguments[i+1]);
                 else if(arguments[i].equals("create-stream"))
                 {
+                    if(arguments.length<=i+2)
+                        continue;
                     if(!arguments[i+2].equals("pull-from"))
                         continue;
                     try {

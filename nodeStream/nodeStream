@@ -1,0 +1,49 @@
+#!/bin/sh
+SERVICE_NAME=nodeStream
+PID_PATH_NAME=/tmp/nodeStream-pid
+case $1 in
+
+    start)
+
+        echo "Starting $SERVICE_NAME ..."
+
+        if [ ! -f $PID_PATH_NAME ]; then
+
+               nohup java -cp /home/yorbe/nodeStream/build/classes:/home/yorbe/nodeStream/lib/json-20131018.jar:/home/yorbe/nodeStream/lib/sigar.jar: nodestream.NodeStream /tmp 2>> /dev/null >> /dev/null &
+
+                        echo $! > $PID_PATH_NAME
+
+            echo "$SERVICE_NAME started ..."
+
+        else
+            echo $PID_PATH_NAME
+            echo "$SERVICE_NAME is already running ..."
+
+        fi
+
+    ;;
+
+    stop)
+
+        if [ -f $PID_PATH_NAME ]; then
+
+            PID=$(cat $PID_PATH_NAME);
+
+            echo "Stopping $SERVICE_NAME ..."
+            kill $PID
+            rm $PID_PATH_NAME
+            echo "$SERVICE_NAME stoped ..."
+	else
+	    echo "$SERVICE_NAME is not running ..."
+        fi
+     ;;
+     *)
+        
+     	for i in "$@"
+        do
+	    COMMANDS="$COMMANDS $i"
+        done
+        echo $COMMANDS > /tmp/nodepipe
+     ;;
+esac
+exit 0
