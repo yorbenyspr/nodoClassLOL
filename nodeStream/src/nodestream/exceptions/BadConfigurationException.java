@@ -7,8 +7,8 @@ package nodestream.exceptions;
 
 /**
  *
- * @author yorbe
- * Esta excepción es lanzada cuando el archivo de configuración de Nginx posee una estructura inválida.
+ * @author Yorbenys
+ * This Exception is throwed when Nginx configuration File has a bag structure.
  */
 public class BadConfigurationException extends Exception {
 

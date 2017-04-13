@@ -8,10 +8,16 @@ import java.util.HashMap;
 import org.json.*;
 /**
  *
- * @author yorbe
+ * @author Yorbenys
  */
 public final class ArgumentReader {
-    
+    /**
+    *
+    * @author Yorbenys
+    * Read the commands from arguments array, change the Nginx configuration file and tells to
+    * Nginx service to reload its configuratins.
+    * @param arguments the command line arguments
+    */    
     public static synchronized void readArguments(String[] arguments)
     {
         JSONObject configuration = Utils.getConfiguration();

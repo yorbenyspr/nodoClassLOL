@@ -11,11 +11,13 @@ import java.util.Scanner;
 import nodestream.utils.ArgumentReader;
 /**
  *
- * @author yorbe
+ * @author Yorbenys
  */
 public class NodeStream implements Runnable{
 
     /**
+     * @author Yorbenys
+     * Entry ponint for the nodeStream app 
      * @param args the command line arguments
      * create-stream $streamName pull-from $pullStream
      * delete-stream  $streamName
@@ -39,7 +41,10 @@ public class NodeStream implements Runnable{
            
         }
     }
-
+    /**
+     * @author Yorbenys
+     * Read commands from a named pipe
+     */
     @Override
     public void run() {
         try {

@@ -12,10 +12,15 @@ import org.json.*;
 import java.util.HashMap;
 /**
  *
- * @author dotUser
+ * @author Yorbenys
  */
 public final class Utils {
     private Utils(){}
+    /**
+    *
+    * @author Yorbenys
+    * Get the configuration for the nodeStrem app
+    */    
     public static synchronized JSONObject getConfiguration()
     {
             JSONObject obj = new JSONObject("{}");
@@ -50,7 +55,12 @@ public final class Utils {
             }
           
     }
-    
+    /**
+    *
+    * @author Yorbenys
+    * Create a configuration file for the nodeStrem app
+    * @param values The key-value
+    */
     public static synchronized void createConfigFile(HashMap<String,String> values)
     {
         JSONObject obj = getConfiguration();

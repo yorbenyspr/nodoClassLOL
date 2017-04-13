@@ -13,7 +13,8 @@ import java.io.IOException;
 import nodestream.exceptions.BadConfigurationException;
 /**
  *
- * @author yorbe
+ * @author Yorbenys
+ * Manipulate the Ngins configuration file 
  */
 public class ConfigWriter {
     private static ConfigWriter instance=null;
@@ -30,6 +31,13 @@ public class ConfigWriter {
             instance= new ConfigWriter();
         return instance;
     }
+    /**
+    *
+    * @author Yorbenys
+    * Write information into Nginx configuration file.
+    * @param sb the string to write in the Nginx configuration file
+    * @param pathNginxConfigFile the path to Nginx configuration file
+    */
     private void writeFile(StringBuilder sb,String pathNginxConfigFile) throws IOException
     {
             FileWriter fWriter= new FileWriter(pathNginxConfigFile);
@@ -37,7 +45,13 @@ public class ConfigWriter {
             fWriter.flush();
             fWriter.close();
     }
-    //Looking for a position where will be inserted the new String
+    
+    /**
+    *
+    * @author Yorbenys
+    * Get the position where will be inserted the new String
+    * @param sb the string 
+    */
     private int positionToWrite(StringBuilder sb) 
     {
         int offset=sb.indexOf("application ");
@@ -66,6 +80,14 @@ public class ConfigWriter {
         }
         return offset;
     }
+    /**
+    *
+    * @author Yorbenys
+    * Write into Nginx configuration file a new stream.
+    * @param pathNginxConfigFile the path to Nginx configuration file
+    * @param streamName stream id
+    * @param pullFrom the strem source 
+    */
     public void createStream(String pathNginxConfigFile,String streamName, String pullFrom) throws FileNotFoundException, IOException, BadConfigurationException
     {
         synchronized(ConfigWriter.class)
@@ -95,7 +117,13 @@ public class ConfigWriter {
             
         }
     }
-    
+    /**
+    *
+    * @author Yorbenys
+    * Delete from Nginx configuration file a stream
+    * @param id the stream id
+    * @param pathNginxConfigFile the path to Nginx configuration file 
+    */
     public void deleteStream(String id,String pathNginxConfigFile) throws FileNotFoundException, IOException
     {
         synchronized(ConfigWriter.class)

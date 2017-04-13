@@ -10,29 +10,47 @@ import org.hyperic.sigar.*;
 import org.json.*;
 /**
  *
- * @author yorbe
+ * @author Yorbenys
  */
 public final class SystemInfo {
     private SystemInfo(){};
-    
+    /**
+    *
+    * @author Yorbenys
+    * Get the memory usage in the System.
+    */
     public static String memoryUsage()
     {
         OperatingSystemMXBean operatingSystemMXBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
         long usage=operatingSystemMXBean.getTotalPhysicalMemorySize()-operatingSystemMXBean.getFreePhysicalMemorySize();
         return Long.toString(usage/1024);
     }
+    /**
+    *
+    * @author Yorbenys
+    * Get the total memory in the System.
+    */
     public static String totalMemory()
     {
         OperatingSystemMXBean operatingSystemMXBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
         return Long.toString(operatingSystemMXBean.getTotalPhysicalMemorySize()/1024);
         
     }
+    /**
+    *
+    * @author Yorbenys
+    * Get the free memory in the System.
+    */
     public static String freeMemory()
     {
         OperatingSystemMXBean operatingSystemMXBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
         return Long.toString(operatingSystemMXBean.getFreePhysicalMemorySize()/1024);
     }
-    
+    /**
+    *
+    * @author Yorbenys
+    * Get the cpu info in the System.
+    */
     public static JSONObject cpuInfo()
     {
         JSONObject cpuU = new JSONObject();
@@ -51,7 +69,11 @@ public final class SystemInfo {
         }
         return cpuU;
     }
-    
+    /**
+    *
+    * @author Yorbenys
+    * Get the system info.
+    */
     public static JSONObject getSystemInfo()
     {
         JSONObject info = new JSONObject();
