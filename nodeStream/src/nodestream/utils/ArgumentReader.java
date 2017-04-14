@@ -57,6 +57,9 @@ public final class ArgumentReader {
                 
                 
             }
+            else
+                break;
+            
                 
         }
         if(!confArguments.isEmpty())

@@ -17,7 +17,7 @@ public class NodeStream implements Runnable{
 
     /**
      * @author Yorbenys
-     * Entry ponint for the nodeStream app 
+     * Entry point for the nodeStream app 
      * @param args the command line arguments
      * create-stream $streamName pull-from $pullStream
      * delete-stream  $streamName

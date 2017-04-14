@@ -10,6 +10,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import nodestream.exceptions.BadConfigurationException;
 /**
  *
@@ -18,10 +21,20 @@ import nodestream.exceptions.BadConfigurationException;
  */
 public class ConfigWriter {
     private static ConfigWriter instance=null;
-    
+    private Logger logger = null;    
     private ConfigWriter()
     {
-        
+        logger = Logger.getLogger("NodeStream");
+        try {  
+
+        // This block configure the logger with handler and formatter
+        FileHandler fh = new FileHandler("NodeStream.log");  
+        logger.addHandler(fh);
+        SimpleFormatter formatter = new SimpleFormatter();  
+        fh.setFormatter(formatter);
+
+    } catch (SecurityException | IOException e) {  
+    }  
     }
     
     //Singleton
@@ -44,6 +57,7 @@ public class ConfigWriter {
             fWriter.append(sb);
             fWriter.flush();
             fWriter.close();
+            logger.info("Writing into Nginx configuration file"); 
     }
     
     /**
